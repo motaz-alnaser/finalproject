@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Booking extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id', 'activity_id', 'booking_date', 
+        'booking_time', 'num_participants', 'total_amount', 'status'
+    ];
+
+    protected $casts = [
+        'booking_date' => 'date',
+        'booking_time' => 'datetime:H:i',
+        'total_amount' => 'decimal:2',
+    ];
+
+    // علاقة: حجز → مستخدم
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // علاقة: حجز → نشاط
+    public function activity()
+    {
+        return $this->belongsTo(Activity::class);
+    }
+
+    // علاقة: حجز → تقييم (واحد فقط)
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
+}
